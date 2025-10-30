@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PROMOBROTHERS — Ofertas e Promos</title>
+  <title>OfertaChip — Canal de Ofertas e Promos</title>
   <meta name="theme-color" content="#9333ea" /> 
   <style>
     /* 💜 Esquema de Cores Roxo (Purple Theme) 💜 */
@@ -285,20 +285,21 @@
       starsBg.appendChild(star);
     }
 
-    const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun";
+    const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun"; // Substitua pelo seu código de grupo
+    const toastEl = document.querySelector(".toast");
 
-function entrarNoGrupo() {
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        // MÓVEL: Tenta o Deep Link para pular a tela de transição.
-        // Removido o fallback HTTPS/setTimeout.
-        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
-      } else {
-        // 🖥️ DESKTOP: Mantido o formato com 'accept' (como solicitado).
-        window.location.href = `https://web.whatsapp.com/accept?code=${GROUP_CODE}`;
-      }
-    }
+    // Função para abrir o WhatsApp com detecção de dispositivo
+    function openWhatsApp() {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // No mobile, usa o deep link
+        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
+      } else {
+        // No desktop/navegador, usa a URL web
+        window.open(`https://chat.whatsapp.com/${GROUP_CODE}`, '_blank');
+      }
+    }
 
     // Microinteraction: ripple on click
     document.querySelectorAll(".rippleable").forEach(btn => {
