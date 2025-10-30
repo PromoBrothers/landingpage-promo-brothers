@@ -288,24 +288,26 @@
     const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun";
 
 function openWhatsApp() {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-  if (isMobile) {
-    // 1. TENTA O DEEP LINK (ABERTURA IMEDIATA)
-    window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
-    
-    // 2. FALLBACK HACK (Para iOS e navegadores teimosos)
-    // Se o app não abrir em 500ms, o navegador vai para a URL HTTPS.
-    // Isso é útil para navegadores que não entendem o deep link imediatamente.
-    setTimeout(function() {
-      window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
-    }, 500);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      // 1. Tenta o Deep Link e o redirecionamento HTTPS na MESMA ABA
+      
+      if (isMobile) {
+        // Tenta o deep link primeiro para abrir o APP
+        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
+        
+        // Fallback: Se o deep link falhar em abrir o app (ex: app não instalado), 
+        // o navegador tenta carregar a URL HTTPS na mesma aba.
+        // O pequeno atraso dá tempo ao sistema operacional de abrir o app antes.
+        setTimeout(function() {
+          window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
+        }, 500);
 
-  } else {
-    // Para Desktop, continua usando a URL web em nova aba
-    window.open(`https://chat.whatsapp.com/${GROUP_CODE}`);
-  }
-}
+      } else {
+        // No Desktop, usa a URL web na MESMA ABA.
+        window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
+      }
+    }
 
     // Microinteraction: ripple on click
     document.querySelectorAll(".rippleable").forEach(btn => {
