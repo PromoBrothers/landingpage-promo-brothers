@@ -285,21 +285,27 @@
       starsBg.appendChild(star);
     }
 
-    const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun"; // Substitua pelo seu código de grupo
-    const toastEl = document.querySelector(".toast");
+    const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun";
 
-    // Função para abrir o WhatsApp com detecção de dispositivo
-    function openWhatsApp() {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        // No mobile, usa o deep link
-        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
-      } else {
-        // No desktop/navegador, usa a URL web
-        window.open(`https://chat.whatsapp.com/${GROUP_CODE}`, '_blank');
-      }
-    }
+function openWhatsApp() {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // 1. TENTA O DEEP LINK (ABERTURA IMEDIATA)
+    window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
+    
+    // 2. FALLBACK HACK (Para iOS e navegadores teimosos)
+    // Se o app não abrir em 500ms, o navegador vai para a URL HTTPS.
+    // Isso é útil para navegadores que não entendem o deep link imediatamente.
+    setTimeout(function() {
+      window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
+    }, 500);
+
+  } else {
+    // Para Desktop, continua usando a URL web em nova aba
+    window.open(`https://chat.whatsapp.com/${GROUP_CODE}`, '_blank');
+  }
+}
 
     // Microinteraction: ripple on click
     document.querySelectorAll(".rippleable").forEach(btn => {
