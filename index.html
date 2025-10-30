@@ -287,27 +287,18 @@
 
     const GROUP_CODE = "C3QEuPYpLhT9Hlj9mI2bun";
 
-function openWhatsApp() {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      // 1. Tenta o Deep Link e o redirecionamento HTTPS na MESMA ABA
-      
-      if (isMobile) {
-        // Tenta o deep link primeiro para abrir o APP
-        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
-        
-        // Fallback: Se o deep link falhar em abrir o app (ex: app não instalado), 
-        // o navegador tenta carregar a URL HTTPS na mesma aba.
-        // O pequeno atraso dá tempo ao sistema operacional de abrir o app antes.
-        setTimeout(function() {
-          window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
-        }, 500);
-
-      } else {
-        // No Desktop, usa a URL web na MESMA ABA.
-        window.location.href = `https://chat.whatsapp.com/${GROUP_CODE}`;
-      }
-    }
+function entrarNoGrupo() {
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // MÓVEL: Tenta o Deep Link para pular a tela de transição.
+        // Removido o fallback HTTPS/setTimeout.
+        window.location.href = `whatsapp://chat?code=${GROUP_CODE}`;
+      } else {
+        // 🖥️ DESKTOP: Mantido o formato com 'accept' (como solicitado).
+        window.location.href = `https://web.whatsapp.com/accept?code=${GROUP_CODE}`;
+      }
+    }
 
     // Microinteraction: ripple on click
     document.querySelectorAll(".rippleable").forEach(btn => {
